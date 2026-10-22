@@ -39,6 +39,15 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -50,9 +59,7 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      overflow-x: hidden;
       line-height: 1.6;
-      position: relative;
     }
 
     /* Ambient Cursor Glow Spotlight */
@@ -1554,17 +1561,44 @@
       justify-content: space-between;
     }
 
+    /* Base Stats Grid for Offline SQLite Card */
+    .offline-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .offline-stat-box {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .offline-stat-box .stat-val {
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .offline-stat-box .stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN (100% Mobile & Tablet Optimized)
+       ========================================================================== */
     @media (max-width: 900px) {
       .scrolly-hud-left {
-        top: 76px;
+        top: 74px;
         left: 16px;
       }
       .chronograph-dial {
-        width: 80px;
-        height: 80px;
+        width: 72px;
+        height: 72px;
       }
       .dial-percent {
-        font-size: 16px;
+        font-size: 15px;
       }
       .chapter-pills-list {
         display: none;
@@ -1573,35 +1607,308 @@
         display: none;
       }
       .callout-tag {
-        display: none;
+        display: none !important;
       }
       .bento-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
       .col-8, .col-4, .col-6, .col-12 {
         grid-column: span 1;
       }
       .install-sim-card {
         grid-template-columns: 1fr;
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Turn off heavy cursor tracker on touch screens for 60-120fps smoothness */
+      .cursor-spotlight {
+        display: none;
+      }
+
+      /* Navbar */
+      nav {
+        height: 64px;
+      }
+      .nav-right-actions .nav-link {
+        display: none;
+      }
+      .nav-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+        gap: 6px;
+      }
+      .logo-title {
+        font-size: 18px;
+      }
+      .logo-tag {
+        display: none;
+      }
+      .logo-badge-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+      }
+
+      /* Hero Section */
+      .hero {
+        padding-top: 105px;
+        padding-bottom: 45px;
+      }
+      .hero-title {
+        font-size: clamp(28px, 8vw, 44px);
+        letter-spacing: -1px;
+        line-height: 1.15;
+        margin-bottom: 16px;
+      }
+      .hero-subtitle {
+        font-size: 15px;
+        margin-bottom: 26px;
+        padding: 0 4px;
+        line-height: 1.55;
+      }
+      .cta-cluster {
+        flex-direction: column;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto 30px;
+        gap: 12px;
+      }
+      .cta-cluster .btn-primary,
+      .cta-cluster .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        font-size: 15px;
+      }
+      .trust-badges {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 14px;
+        text-align: left;
+        max-width: 340px;
+        margin: 0 auto 36px;
+        font-size: 12px;
+      }
+
+      /* 3D Scrollytelling Section on Mobile */
+      .scrolly-section-wrapper {
+        height: 220vh;
+        overflow: hidden;
+      }
+      .scrolly-hud-left {
+        top: 68px;
+        left: 12px;
+        gap: 0;
+      }
+      .chronograph-dial {
+        width: 58px;
+        height: 58px;
+      }
+      .dial-percent {
+        font-size: 13px;
+      }
+      .dial-sub {
+        display: none;
+      }
+      .scrolly-hud-top {
+        top: 72px;
+        right: 12px;
+        left: auto;
+        font-size: 9px;
+        padding: 5px 12px;
+        max-width: calc(100vw - 90px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .scrolly-3d-stage {
+        width: 250px;
+        height: 480px;
+        perspective: 900px;
+      }
+      .phone-assembly {
+        width: 236px;
+        height: 460px;
+      }
+      .assembly-layer {
+        border-radius: 34px;
+      }
+      .chip-microcircuit {
+        width: 70px;
+        height: 70px;
+      }
+      .chip-microcircuit svg {
+        width: 34px;
+        height: 34px;
+      }
+      .orbital-ring {
+        inset: -20px;
+      }
+      .orbital-badge {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      /* Bento Section on Mobile */
+      .bento-section {
+        padding: 55px 0;
+      }
+      .section-header {
+        margin-bottom: 34px;
+      }
+      .section-title {
+        font-size: clamp(24px, 6.5vw, 32px);
+      }
+      .spotlight-card {
+        padding: 22px 18px;
+        border-radius: 20px;
+      }
+      .bento-title {
+        font-size: 20px;
+      }
+      .bento-desc {
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+      .code-terminal {
+        padding: 12px;
+        font-size: 11px;
+        line-height: 1.5;
+        overflow-x: auto;
+      }
+
+      /* Courses Section on Mobile */
+      .courses-section {
+        padding: 50px 0;
+      }
+      .course-card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .course-card {
+        padding: 20px 18px;
+        border-radius: 18px;
+      }
+
+      /* Install Simulator on Mobile */
+      .install-sim-section {
+        padding: 50px 0;
+      }
+      .install-sim-card {
+        padding: 20px 16px;
+        border-radius: 20px;
+        gap: 24px;
+      }
+      .sim-phone-screen {
+        padding: 16px;
+        border-radius: 20px;
+      }
+
+      /* FAQ Section on Mobile */
+      .faq-section {
+        padding: 50px 0;
+      }
+      .faq-item {
+        padding: 18px 16px;
+        border-radius: 14px;
+      }
+      .faq-question {
+        font-size: 16px;
+      }
+
+      /* Bottom CTA */
+      .bottom-cta {
+        padding: 60px 0;
+      }
+      .bottom-cta .btn-primary,
+      .bottom-cta .btn-secondary {
+        width: 100%;
+        max-width: 340px;
       }
     }
 
     @media (max-width: 600px) {
+      .container {
+        padding: 0 16px;
+      }
+      .whatsapp-float {
+        padding: 13px;
+        border-radius: 50%;
+        bottom: 18px;
+        right: 18px;
+        width: 50px;
+        height: 50px;
+        justify-content: center;
+        box-shadow: 0 6px 25px rgba(37, 211, 102, 0.55);
+      }
       .whatsapp-float span {
         display: none;
       }
-      .whatsapp-float {
-        padding: 14px;
-        border-radius: 50%;
-        bottom: 20px;
-        right: 20px;
+      .offline-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .offline-stat-box {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .offline-stat-box .stat-lbl {
+        margin-top: 0;
+      }
+
+      /* Download Modal Mobile Bottom Sheet Styling */
+      .download-modal-overlay {
+        padding: 8px;
+        align-items: flex-end;
       }
       .download-modal-card {
-        padding: 24px 20px;
+        padding: 24px 18px;
+        border-radius: 24px 24px 18px 18px;
+        max-height: 88vh;
+        overflow-y: auto;
       }
+      .modal-title {
+        font-size: 21px;
+      }
+      .modal-subtitle {
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+      .download-channel-group {
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .channel-btn {
+        padding: 12px 14px;
+        border-radius: 14px;
+      }
+      .channel-left {
+        gap: 12px;
+      }
+      .channel-icon-circle {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+      }
+      .channel-title {
+        font-size: 14px;
+      }
+      .channel-desc {
+        font-size: 11px;
+      }
+      .channel-action-badge {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+      /* On a mobile screen, scanning a QR code with the same phone camera is impossible */
       .modal-qr-box {
-        flex-direction: column;
-        text-align: center;
+        display: none;
       }
     }
 
@@ -2050,18 +2357,18 @@
           <p class="bento-desc">
             Unstable 4G or load-shedding? CourseHub uses an embedded Room SQLite database so course notes, checklists, and video positions are stored locally on your device.
           </p>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px;">
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
-              <div style="font-size: 18px; font-weight: 800; color: #38bdf8;">0ms</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Instant Resume</div>
+          <div class="offline-stats-grid">
+            <div class="offline-stat-box">
+              <div class="stat-val" style="color: #38bdf8;">0ms</div>
+              <div class="stat-lbl">Instant Resume</div>
             </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
-              <div style="font-size: 18px; font-weight: 800; color: #34d399;">100%</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Offline Notes</div>
+            <div class="offline-stat-box">
+              <div class="stat-val" style="color: #34d399;">100%</div>
+              <div class="stat-lbl">Offline Notes</div>
             </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
-              <div style="font-size: 18px; font-weight: 800; color: #fbbf24;">31 MB</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Total App Size</div>
+            <div class="offline-stat-box">
+              <div class="stat-val" style="color: #fbbf24;">31 MB</div>
+              <div class="stat-lbl">Total App Size</div>
             </div>
           </div>
         </div>
@@ -2669,6 +2976,8 @@
       let progress = -rect.top / totalDist;
       progress = Math.max(0, Math.min(1, progress));
 
+      const isMobile = window.innerWidth <= 768;
+
       // 1. Update Dial Meter & Circular SVG
       const percent = Math.round(progress * 100);
       if (dialPercentText) dialPercentText.textContent = (percent < 10 ? '0' : '') + percent + '%';
@@ -2704,8 +3013,8 @@
       // =======================================================================
       if (progress < 0.25) {
         const p1 = progress / 0.25; // 0 to 1
-        const rotX = 22 - (p1 * 14); // 22 -> 8 deg
-        const rotY = -28 + (p1 * 18); // -28 -> -10 deg
+        const rotX = isMobile ? (10 - p1 * 8) : (22 - (p1 * 14)); // gentler tilt on mobile
+        const rotY = isMobile ? (-10 + p1 * 8) : (-28 + (p1 * 18));
         const scale = 0.9 + (p1 * 0.1);
 
         if (phoneAssembly) {
@@ -2735,18 +3044,18 @@
         const p2 = (progress - 0.25) / 0.30; // 0 to 1
         
         // Gentle rotation while exploded
-        const rotX = 8 + (p2 * 4); // 8 -> 12 deg
-        const rotY = -10 - (p2 * 12); // -10 -> -22 deg
+        const rotX = isMobile ? (4 + p2 * 3) : (8 + (p2 * 4));
+        const rotY = isMobile ? (-6 - p2 * 6) : (-10 - (p2 * 12));
 
         if (phoneAssembly) {
           phoneAssembly.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.02, 1.02, 1)`;
         }
 
-        // Explode layers along Z-axis in physical space
-        const zChassis = -160 * p2;
-        const zDatabase = -50 * p2;
-        const zCompose = 40 * p2;
-        const zHologram = 140 * p2;
+        // Explode layers along Z-axis in physical space (scaled on mobile to fit screen bounds)
+        const zChassis = (isMobile ? -70 : -160) * p2;
+        const zDatabase = (isMobile ? -25 : -50) * p2;
+        const zCompose = (isMobile ? 20 : 40) * p2;
+        const zHologram = (isMobile ? 65 : 140) * p2;
 
         if (layerChassis) {
           layerChassis.style.transform = `translateZ(${zChassis.toFixed(1)}px)`;
@@ -2763,11 +3072,16 @@
           layerHologram.style.opacity = (p2 * 0.9).toFixed(2);
         }
 
-        // Reveal technical laser callouts
+        // Reveal technical laser callouts (desktop only)
         [calloutTopRight, calloutMidLeft, calloutBottomRight].forEach(c => {
           if (c) {
-            c.style.opacity = (p2 > 0.4 ? '1' : '0');
-            c.style.transform = p2 > 0.4 ? 'scale(1)' : 'scale(0.8)';
+            if (isMobile) {
+              c.style.opacity = '0';
+              c.style.display = 'none';
+            } else {
+              c.style.opacity = (p2 > 0.4 ? '1' : '0');
+              c.style.transform = p2 > 0.4 ? 'scale(1)' : 'scale(0.8)';
+            }
           }
         });
 
@@ -2783,14 +3097,19 @@
 
         // Layers begin smoothly re-assembling
         const reassemble = 1 - p3;
-        if (layerChassis) layerChassis.style.transform = `translateZ(${(-160 * reassemble).toFixed(1)}px)`;
-        if (layerDatabase) layerDatabase.style.transform = `translateZ(${(-50 * reassemble).toFixed(1)}px)`;
-        if (layerComposeUi) layerComposeUi.style.transform = `translateZ(${(40 * reassemble).toFixed(1)}px)`;
-        if (layerHologram) layerHologram.style.transform = `translateZ(${(140 * reassemble).toFixed(1)}px)`;
+        const zChassis = (isMobile ? -70 : -160) * reassemble;
+        const zDatabase = (isMobile ? -25 : -50) * reassemble;
+        const zCompose = (isMobile ? 20 : 40) * reassemble;
+        const zHologram = (isMobile ? 65 : 140) * reassemble;
+
+        if (layerChassis) layerChassis.style.transform = `translateZ(${zChassis.toFixed(1)}px)`;
+        if (layerDatabase) layerDatabase.style.transform = `translateZ(${zDatabase.toFixed(1)}px)`;
+        if (layerComposeUi) layerComposeUi.style.transform = `translateZ(${zCompose.toFixed(1)}px)`;
+        if (layerHologram) layerHologram.style.transform = `translateZ(${zHologram.toFixed(1)}px)`;
 
         // Phone tilts upright
-        const rotX = 12 - (p3 * 10); // 12 -> 2 deg
-        const rotY = -22 + (p3 * 20); // -22 -> -2 deg
+        const rotX = isMobile ? (6 - p3 * 5) : (12 - (p3 * 10));
+        const rotY = isMobile ? (-10 + p3 * 9) : (-22 + (p3 * 20));
         if (phoneAssembly) {
           phoneAssembly.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1, 1, 1)`;
         }
@@ -2800,21 +3119,22 @@
           if (c) c.style.opacity = '0';
         });
 
-        // Orbiting skill badges spin in elliptical 3D path
+        // Orbiting skill badges spin in elliptical 3D path (safely clamped within viewport on mobile)
         if (orbitalRing) {
           orbitalRing.style.opacity = '1';
         }
 
         const baseAngle = p3 * Math.PI * 2.5; // continuous orbital spin
+        const radiusX = isMobile ? 95 : 180;
+        const radiusY = isMobile ? 140 : 220;
+
         orbBadges.forEach((badge, index) => {
           if (!badge) return;
           const angle = baseAngle + (index * (Math.PI * 2 / orbBadges.length));
-          const radiusX = 180;
-          const radiusY = 220;
           const x = Math.cos(angle) * radiusX;
           const y = Math.sin(angle) * radiusY;
           const zIndex = Math.sin(angle) > 0 ? 40 : 5;
-          const scale = 0.85 + (Math.sin(angle) + 1) * 0.15;
+          const scale = isMobile ? (0.75 + (Math.sin(angle) + 1) * 0.12) : (0.85 + (Math.sin(angle) + 1) * 0.15);
           badge.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(2)})`;
           badge.style.zIndex = zIndex;
         });
@@ -2835,7 +3155,7 @@
         if (layerHologram) layerHologram.style.transform = 'translateZ(0px)';
 
         if (phoneAssembly) {
-          phoneAssembly.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1.04, 1.04, 1)';
+          phoneAssembly.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1.02, 1.02, 1)';
         }
 
         // Hide orbital ring & callouts
