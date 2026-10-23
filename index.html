@@ -39,27 +39,29 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
-    html, body {
-      width: 100%;
-      max-width: 100vw;
-      overflow-x: clip;
+    html {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      position: relative;
+      width: 100%;
+      min-height: 100%;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after {
+      box-sizing: inherit;
       font-family: var(--font-family);
       -webkit-font-smoothing: antialiased;
     }
 
     body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
       background-color: var(--bg-dark);
       color: var(--text-main);
       line-height: 1.6;
+      position: relative;
     }
 
     /* Ambient Cursor Glow Spotlight */
@@ -80,6 +82,17 @@
     }
 
     /* Background Ambient Gradients */
+    .ambient-bg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1500px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .bg-grid {
       position: absolute;
       inset: 0;
@@ -111,10 +124,11 @@
     }
 
     .orb-2 {
-      top: 1400px;
-      right: -100px;
-      width: 550px;
-      height: 550px;
+      top: 1000px;
+      right: 0;
+      max-width: 90vw;
+      width: 500px;
+      height: 500px;
       background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
     }
 
@@ -402,26 +416,32 @@
        ========================================================================== */
     .scrolly-section-wrapper {
       position: relative;
+      display: block;
+      width: 100%;
       height: 420vh; /* Smooth runway for 4 interactive animation chapters */
       background: radial-gradient(ellipse at 50% 30%, #0c1426 0%, #07090e 70%);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      overflow: visible !important;
+      box-sizing: border-box;
     }
 
     .scrolly-sticky-viewport {
       position: -webkit-sticky;
       position: sticky;
       top: 0;
+      left: 0;
       width: 100%;
       height: 100vh;
       height: 100dvh;
-      min-height: -webkit-fill-available;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 20;
+      box-sizing: border-box;
+      will-change: transform;
     }
 
     /* Ambient HUD Radar / Dial on top left */
@@ -1714,18 +1734,29 @@
 
       /* 3D Scrollytelling Section on Mobile */
       .scrolly-section-wrapper {
-        height: 380vh;
-        overflow: visible;
+        height: 400vh;
+        display: block;
+        width: 100%;
+        overflow: visible !important;
         position: relative;
+        box-sizing: border-box;
       }
       .scrolly-sticky-viewport {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
+        left: 0;
         width: 100%;
         height: 100vh;
         height: 100dvh;
-        min-height: -webkit-fill-available;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        z-index: 20;
+        box-sizing: border-box;
+        will-change: transform;
       }
       .scrolly-hud-left {
         top: 68px;
@@ -2016,9 +2047,11 @@
   <div class="cursor-spotlight" id="cursorSpotlight"></div>
 
   <!-- Background Ambience -->
-  <div class="bg-grid"></div>
-  <div class="ambient-orb orb-1"></div>
-  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+  </div>
 
   <!-- Navbar -->
   <nav>
@@ -3005,7 +3038,8 @@
       const trackRect = scrollyTrack.getBoundingClientRect();
       const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
       const trackTop = trackRect.top + currentScrollY;
-      const trackHeight = scrollyTrack.offsetHeight - window.innerHeight;
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+      const trackHeight = Math.max(1, scrollyTrack.offsetHeight - vh);
       const targetScrollY = trackTop + (trackHeight * targetProgress);
       window.scrollTo({
         top: targetScrollY,
@@ -3017,12 +3051,15 @@
 
     function updateScrollytelling() {
       if (!scrollyTrack) return;
-      const rect = scrollyTrack.getBoundingClientRect();
-      const totalDist = scrollyTrack.offsetHeight - window.innerHeight;
-      
-      // Compute progress 0.0 to 1.0 clamped
-      let progress = -rect.top / totalDist;
-      progress = Math.max(0, Math.min(1, progress));
+      try {
+        const rect = scrollyTrack.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        const totalDist = Math.max(1, scrollyTrack.offsetHeight - vh);
+        
+        // Compute progress 0.0 to 1.0 clamped
+        let progress = -rect.top / totalDist;
+        if (isNaN(progress)) progress = 0;
+        progress = Math.max(0, Math.min(1, progress));
 
       const isMobile = window.innerWidth <= 768;
 
@@ -3228,8 +3265,9 @@
           hudBottom.style.opacity = '1';
         }
       }
-
+    } finally {
       isScrollyTicking = false;
+    }
     }
 
     window.addEventListener('scroll', () => {
@@ -3250,6 +3288,20 @@
       updateScrollytelling();
     });
 
+    // Handle all anchor links pointing to #scrollyTrack to pin top: 0 cleanly
+    document.querySelectorAll('a[href="#scrollyTrack"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!scrollyTrack) return;
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const trackTop = scrollyTrack.getBoundingClientRect().top + currentScrollY;
+        window.scrollTo({
+          top: trackTop,
+          behavior: 'smooth'
+        });
+      });
+    });
+
     // Make Chronograph Dial clickable to cycle chapters on mobile & touch
     const chronoDial = document.querySelector('.chronograph-dial');
     if (chronoDial) {
@@ -3258,7 +3310,8 @@
       chronoDial.addEventListener('click', () => {
         if (!scrollyTrack) return;
         const rect = scrollyTrack.getBoundingClientRect();
-        const totalDist = scrollyTrack.offsetHeight - window.innerHeight;
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        const totalDist = Math.max(1, scrollyTrack.offsetHeight - vh);
         let curProgress = -rect.top / totalDist;
         let nextTarget = 0.38;
         if (curProgress < 0.22) nextTarget = 0.38;
