@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wahaballied6-student.github.io/CourseHub/sitemap.xml
