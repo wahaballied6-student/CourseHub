@@ -1,0 +1,6 @@
+{
+  "name": "CourseHub",
+  "description": "Modern online course platform landing page with interactive catalog browsing and course explorations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

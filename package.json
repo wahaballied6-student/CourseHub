@@ -1,0 +1,9 @@
+{
+  "name": "coursehub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CourseHub web landing page and Android showcase",
+  "scripts": {
+    "start": "node serve.js"
+  }
+}
